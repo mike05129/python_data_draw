@@ -23,7 +23,11 @@ def add_data_for_name(name_data, year, rank, name):
         This function modifies the name_data dict to store the provided
         name, year, and rank. This function does not return any value.
     """
-    pass
+    name_data[name]={}
+    name_data[name][year] =rank
+
+    for key_id,key_year in name_data.items():
+        print(key_id)
 
 # ------------- DO NOT EDIT THE CODE BELOW THIS LINE ---------------- #
 

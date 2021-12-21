@@ -7,7 +7,10 @@ Adapted from Nick Parlante's Baby Names assignment by
 Jerry Liao.
 """
 
+from os import name
 import sys
+
+from requests.models import iter_slices
 
 
 def add_data_for_name(name_data, year, rank, name):
@@ -24,7 +27,18 @@ def add_data_for_name(name_data, year, rank, name):
         This function modifies the name_data dict to store the provided
         name, year, and rank. This function does not return any value.
     """
-    pass
+    
+    if name in name_data.keys():
+        for name_key,year_key in name_data.items():
+            if year in year_key.keys():
+                if rank < year_key[year]:
+                    year_key[year] = rank
+            else:
+                name_data[name][year] =rank
+    else:
+        name_data[name]={}
+        name_data[name][year] =rank
+
 
 
 def add_file(name_data, filename):
@@ -39,8 +53,17 @@ def add_file(name_data, filename):
     Output:
         This function modifies the name_data dict to store information from
         the provided file name. This function does not return any value.
-    """
-    pass
+    """   
+    file = open(filename,'r')
+    year = file.readline().strip()
+    for line in file:
+       data_list = line .split(',')
+       add_data_for_name(name_data, year, data_list[0].strip(), data_list[1].strip())
+       add_data_for_name(name_data, year, data_list[0].strip(), data_list[2].strip())     
+    file.close()
+    
+
+    
 
 
 def read_files(filenames):
@@ -54,7 +77,10 @@ def read_files(filenames):
     Returns:
         name_data (dict): the dict storing all baby name data in a structured manner
     """
-    pass
+    name_data={}
+    for file in filenames:
+        add_file(name_data, file)
+    return name_data
 
 
 def search_names(name_data, target):
@@ -71,7 +97,13 @@ def search_names(name_data, target):
         matching_names (List[str]): a list of all names from name_data that contain
                                     the target string
     """
-    pass
+    name_list=[]
+    for key_name in name_data.keys():
+        if key_name.lower().find(target.lower())!= -1:
+            name_list.append(key_name)
+    return name_list
+            
+            
 
 
 def print_names(name_data):

@@ -23,7 +23,16 @@ def add_data_for_name(name_data, year, rank, name):
         This function modifies the name_data dict to store the provided
         name, year, and rank. This function does not return any value.
     """
-    pass
+
+    if name in name_data.keys():
+        if year in name_data[name].keys():
+            if rank < name_data[name][year]:
+                name_data[name][year] = rank
+        else:
+            name_data[name][year] =rank
+    else:
+        name_data[name]={}
+        name_data[name][year] =rank
 
 # ------------- DO NOT EDIT THE CODE BELOW THIS LINE ---------------- #
 

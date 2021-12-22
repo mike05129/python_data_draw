@@ -97,23 +97,32 @@ def draw_names(canvas, name_data, lookup_names):
     draw_fixed_lines(canvas)        # draw the fixed background grid
 
     # ----- Write your code below this line ----- #                                                                                           
-    for draw_names in lookup_names:
-        y_rank_coordiate=[]  
-        for year in YEARS: # get rank heigh
+    colors = 0
+    for draw_names in lookup_names: 
+        y_rank_coordiate=[]
+        text_coordiate = 0  #text x coordiate
+        for year in YEARS: # get rank heigh            
             if str(year) in name_data[draw_names].keys(): #check year exist
                 rank = name_data[draw_names][str(year)]
-                y_rank_coordiate.append(round((int(rank)*14)/25+20,1))           
+                y_rank_coordiate.append(round((int(rank)*14)/25+20,1))
+                canvas.create_text(get_x_coordinate(CANVAS_WIDTH,text_coordiate),round((int(rank)*14)/25+20,1),text ="%s %s"%(draw_names,rank),anchor=tkinter.SW)
+                text_coordiate +=1           
             else:
                 y_rank_coordiate.append(str(CANVAS_HEIGHT-GRAPH_MARGIN_SIZE))
+                canvas.create_text(get_x_coordinate(CANVAS_WIDTH,text_coordiate),CANVAS_HEIGHT-GRAPH_MARGIN_SIZE,text ="%s*"%draw_names,anchor=tkinter.SW)
+                text_coordiate +=1  
+        #------draw line------
         for rank_coordiate in range(len(y_rank_coordiate)-1):
-            First_x=get_x_coordinate(CANVAS_WIDTH,rank_coordiate)
-            Sec_x=get_x_coordinate(CANVAS_WIDTH,rank_coordiate+1)
-            canvas.create_line (First_x,y_rank_coordiate[rank_coordiate],Sec_x,y_rank_coordiate[rank_coordiate+1]) 
+            canvas.create_line (get_x_coordinate(CANVAS_WIDTH,rank_coordiate),y_rank_coordiate[rank_coordiate],get_x_coordinate(CANVAS_WIDTH,rank_coordiate+1),y_rank_coordiate[rank_coordiate+1],fill=COLORS[colors],width = LINE_WIDTH) 
         
-   
+        #------color-------
+        if colors > 2:
+            colors=0
+        else:    
+            colors+=1  
         
                 
-        #canvas.create_line(CANVAS_WIDTH,(name_data[draw_names][str(year)]))            
+    #canvas.create_line(CANVAS_WIDTH,(name_data[draw_names][str(year)]))            
    #important!!!! year is int so u need to convert to str, otherwise it will show err key
    #important!!!! err key doesn't means key can't find,it jsut can't compare 
    # ----------------waste a lot of my time!!!! --------------------           

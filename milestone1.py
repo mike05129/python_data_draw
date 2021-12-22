@@ -25,12 +25,11 @@ def add_data_for_name(name_data, year, rank, name):
     """
 
     if name in name_data.keys():
-        for name_key,year_key in name_data.items():
-            if year in year_key.keys():
-                if rank < year_key[year]:
-                    year_key[year] = rank
-            else:
-                name_data[name][year] =rank
+        if year in name_data[name].keys():
+            if rank < name_data[name][year]:
+                name_data[name][year] = rank
+        else:
+            name_data[name][year] =rank
     else:
         name_data[name]={}
         name_data[name][year] =rank

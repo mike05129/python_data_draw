@@ -27,8 +27,17 @@ def add_data_for_name(name_data, year, rank, name):
         This function modifies the name_data dict to store the provided
         name, year, and rank. This function does not return any value.
     """
-    
     if name in name_data.keys():
+        if year in name_data[name].keys():
+            if rank < name_data[name][year]:
+                name_data[name][year] = rank
+        else:
+            name_data[name][year] =rank
+    else:
+        name_data[name]={}
+        name_data[name][year] =rank
+    
+    """if name in name_data.keys():
         for name_key,year_key in name_data.items():
             if year in year_key.keys():
                 if rank < year_key[year]:
@@ -38,6 +47,8 @@ def add_data_for_name(name_data, year, rank, name):
     else:
         name_data[name]={}
         name_data[name][year] =rank
+    """
+        
 
 
 
@@ -57,7 +68,7 @@ def add_file(name_data, filename):
     file = open(filename,'r')
     year = file.readline().strip()
     for line in file:
-       data_list = line .split(',')
+       data_list = line.split(',')
        add_data_for_name(name_data, year, data_list[0].strip(), data_list[1].strip())
        add_data_for_name(name_data, year, data_list[0].strip(), data_list[2].strip())     
     file.close()
